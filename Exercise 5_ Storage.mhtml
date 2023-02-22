@@ -1,0 +1,469 @@
+From: <Saved by Blink>
+Snapshot-Content-Location: https://aws-tc-largeobjects.s3-us-west-2.amazonaws.com/DEV-AWS-MO-GCNv2/exercise-5-storage.html
+Subject: Exercise 5: Storage
+Date: Wed, 22 Feb 2023 10:53:15 -0000
+MIME-Version: 1.0
+Content-Type: multipart/related;
+	type="text/html";
+	boundary="----MultipartBoundary--LSR5AGg9J2wF6WPBypmscIHK3lD6NAvGgtcFnc1Txf----"
+
+
+------MultipartBoundary--LSR5AGg9J2wF6WPBypmscIHK3lD6NAvGgtcFnc1Txf----
+Content-Type: text/html
+Content-ID: <frame-2818F606AF96F436E9849830FEC422C6@mhtml.blink>
+Content-Transfer-Encoding: quoted-printable
+Content-Location: https://aws-tc-largeobjects.s3-us-west-2.amazonaws.com/DEV-AWS-MO-GCNv2/exercise-5-storage.html
+
+<!DOCTYPE html><html xmlns=3D"http://www.w3.org/1999/xhtml" lang=3D"" xml:l=
+ang=3D""><head><meta http-equiv=3D"Content-Type" content=3D"text/html; char=
+set=3DUTF-8"><link rel=3D"stylesheet" type=3D"text/css" href=3D"cid:css-759=
+5c1f9-34f1-406d-a8e0-345514946462@mhtml.blink" />
+ =20
+  <meta name=3D"generator" content=3D"pandoc">
+  <meta name=3D"viewport" content=3D"width=3Ddevice-width, initial-scale=3D=
+1.0, user-scalable=3Dyes">
+  <title>Exercise 5: Storage</title>
+ =20
+ =20
+
+
+</head><body data-new-gr-c-s-check-loaded=3D"14.1097.0" data-gr-ext-install=
+ed=3D"">
+<p><em>[version_1.1]</em></p>
+<div style=3D"background-color: #FFD2D2; padding: 15px; margin-bottom: 25px=
+">
+<h3>
+<span class=3D"fa fa-info-circle"></span> Note
+</h3>
+<p>The exercises in this course will have an associated charge in your AWS =
+account. In this exercise, you create or use the following resources:</p>
+<ul>
+<li>AWS Identity and Access Management (IAM) policy and user (policies and =
+users are AWS account features, offered at no additional charge)</li>
+<li>Amazon Elastic Compute Cloud (Amazon EC2) instance</li>
+<li>Amazon Simple Storage Service (Amazon S3) bucket</li>
+</ul>
+<p>Familiarize yourself with <strong><a href=3D"https://aws.amazon.com/ec2/=
+pricing/" target=3D"_blank">Amazon EC2 pricing</a></strong>, <strong><a hre=
+f=3D"https://aws.amazon.com/s3/pricing/" target=3D"_blank">Amazon S3 pricin=
+g</a></strong>, and the <strong><a href=3D"https://aws.amazon.com/free/" ta=
+rget=3D"_blank">AWS Free Tier</a></strong>.</p>
+</div>
+<h1 id=3D"exercise-5-creating-an-s3-bucket-and-modifying-the-ec2-instance">=
+Exercise 5: Creating an S3 Bucket and Modifying the EC2 Instance</h1>
+<p>For this scenario, you create the S3 bucket where the employee photos wi=
+ll be stored.</p>
+<p>In this exercise, you create the S3 bucket, upload an object to it, and =
+modify the bucket policy. You also launch an EC2 instance with updated user=
+ data so that the application uses the S3 bucket. Finally, you stop the EC2=
+ instance to prevent future costs.</p>
+<h2 id=3D"task-1-creating-an-s3-bucket">Task 1: Creating an S3 bucket</h2>
+<p>In this task, you will create an S3 bucket.</p>
+<ol type=3D"1">
+<li><p>If needed, log in to the AWS Management Console with your <em>Admin<=
+/em> user.</p></li>
+<li><p>In the search box, enter <code>S3</code> and open the Amazon S3 cons=
+ole by choosing <strong>S3</strong>.</p></li>
+<li><p>Choose <strong>Create bucket</strong>.</p></li>
+<li><p>For <strong>Bucket name</strong>, enter <code>employee-photo-bucket-=
+&lt;your initials&gt;-&lt;unique number&gt;</code>.</p>
+<p>Example:</p>
+<div class=3D"sourceCode" id=3D"cb1"><pre class=3D"sourceCode bash" id=3D"c=
+odeblock0"><code class=3D"sourceCode bash"><a class=3D"sourceLine" id=3D"cb=
+1-1" title=3D"1"><span class=3D"ex">employee-photo-bucket-al-907</span></a>=
+</code></pre><button class=3D"btn copybtn" data-clipboard-target=3D"#codebl=
+ock0"><img class=3D"clipboard" src=3D"https://aws-tc-largeobjects.s3-us-wes=
+t-2.amazonaws.com/DEV-AWS-MO-GCNv2/images/clipboard.svg" width=3D"13" alt=
+=3D"Copy to clipboard"></button></div></li>
+<li><p>Choose <strong>Create bucket</strong>.</p></li>
+</ol>
+<h2 id=3D"task-2-uploading-a-photo">Task 2: Uploading a photo</h2>
+<p>In this task, you will upload an object (a photo) to the S3 bucket.</p>
+<ol type=3D"1">
+<li><p>Open the details of your newly created bucket by choosing the bucket=
+ name.</p></li>
+<li><p>Choose <strong>Upload</strong>.</p></li>
+<li><p>Choose <strong>Add files</strong>.</p></li>
+<li><p>Choose a photo of your choice from your computer and choose <strong>=
+Open</strong>.</p></li>
+<li><p>Choose <strong>Upload.</strong></p>
+<p>At the top, you should see <em>Upload succeeded</em> in green.</p></li>
+<li><p>Choose <strong>Close</strong>.</p></li>
+</ol>
+<h2 id=3D"task-3-modifying-the-s3-bucket-policy">Task 3: Modifying the S3 b=
+ucket policy</h2>
+<p>In this task, you will update the bucket policy. The updated configurati=
+on allows the IAM role that you created previously to access the bucket.</p=
+>
+<ol type=3D"1">
+<li><p>Choose the <strong>Permissions</strong> tab.</p></li>
+<li><p>Scroll down to <strong>Bucket policy</strong> and choose <strong>Edi=
+t</strong>.</p></li>
+<li><p>In the box, paste the following policy:</p>
+<div class=3D"sourceCode" id=3D"cb2"><pre class=3D"sourceCode json" id=3D"c=
+odeblock1"><code class=3D"sourceCode json"><a class=3D"sourceLine" id=3D"cb=
+2-1" title=3D"1"><span class=3D"fu">{</span></a>
+<a class=3D"sourceLine" id=3D"cb2-2" title=3D"2">    <span class=3D"dt">"Ve=
+rsion"</span><span class=3D"fu">:</span> <span class=3D"st">"2012-10-17"</s=
+pan><span class=3D"fu">,</span></a>
+<a class=3D"sourceLine" id=3D"cb2-3" title=3D"3">    <span class=3D"dt">"St=
+atement"</span><span class=3D"fu">:</span> <span class=3D"ot">[</span></a>
+<a class=3D"sourceLine" id=3D"cb2-4" title=3D"4">        <span class=3D"fu"=
+>{</span></a>
+<a class=3D"sourceLine" id=3D"cb2-5" title=3D"5">            <span class=3D=
+"dt">"Sid"</span><span class=3D"fu">:</span> <span class=3D"st">"AllowS3Rea=
+dAccess"</span><span class=3D"fu">,</span></a>
+<a class=3D"sourceLine" id=3D"cb2-6" title=3D"6">            <span class=3D=
+"dt">"Effect"</span><span class=3D"fu">:</span> <span class=3D"st">"Allow"<=
+/span><span class=3D"fu">,</span></a>
+<a class=3D"sourceLine" id=3D"cb2-7" title=3D"7">            <span class=3D=
+"dt">"Principal"</span><span class=3D"fu">:</span> <span class=3D"fu">{</sp=
+an></a>
+<a class=3D"sourceLine" id=3D"cb2-8" title=3D"8">                <span clas=
+s=3D"dt">"AWS"</span><span class=3D"fu">:</span> <span class=3D"st">"arn:aw=
+s:iam::&lt;INSERT-ACCOUNT-NUMBER&gt;:role/S3DynamoDBFullAccessRole"</span><=
+/a>
+<a class=3D"sourceLine" id=3D"cb2-9" title=3D"9">            <span class=3D=
+"fu">},</span></a>
+<a class=3D"sourceLine" id=3D"cb2-10" title=3D"10">            <span class=
+=3D"dt">"Action"</span><span class=3D"fu">:</span> <span class=3D"st">"s3:*=
+"</span><span class=3D"fu">,</span></a>
+<a class=3D"sourceLine" id=3D"cb2-11" title=3D"11">            <span class=
+=3D"dt">"Resource"</span><span class=3D"fu">:</span> <span class=3D"ot">[</=
+span></a>
+<a class=3D"sourceLine" id=3D"cb2-12" title=3D"12">                <span cl=
+ass=3D"st">"arn:aws:s3:::&lt;INSERT-BUCKET-NAME&gt;"</span><span class=3D"o=
+t">,</span></a>
+<a class=3D"sourceLine" id=3D"cb2-13" title=3D"13">                <span cl=
+ass=3D"st">"arn:aws:s3:::&lt;INSERT-BUCKET-NAME&gt;/*"</span></a>
+<a class=3D"sourceLine" id=3D"cb2-14" title=3D"14">            <span class=
+=3D"ot">]</span></a>
+<a class=3D"sourceLine" id=3D"cb2-15" title=3D"15">        <span class=3D"f=
+u">}</span></a>
+<a class=3D"sourceLine" id=3D"cb2-16" title=3D"16">    <span class=3D"ot">]=
+</span></a>
+<a class=3D"sourceLine" id=3D"cb2-17" title=3D"17"><span class=3D"fu">}</sp=
+an></a></code></pre><button class=3D"btn copybtn" data-clipboard-target=3D"=
+#codeblock1"><img class=3D"clipboard" src=3D"https://aws-tc-largeobjects.s3=
+-us-west-2.amazonaws.com/DEV-AWS-MO-GCNv2/images/clipboard.svg" width=3D"13=
+" alt=3D"Copy to clipboard"></button></div></li>
+<li><p>Replace the <code>&lt;INSERT-ACCOUNT-NUMBER&gt;</code> placeholder w=
+ith your account number.</p></li>
+<li><p>Replace the <code>&lt;INSERT-BUCKET-NAME&gt;</code> placeholder with=
+ your bucket name.</p>
+<p>Example:</p>
+<div class=3D"sourceCode" id=3D"cb3"><pre class=3D"sourceCode json" id=3D"c=
+odeblock2"><code class=3D"sourceCode json"><a class=3D"sourceLine" id=3D"cb=
+3-1" title=3D"1"><span class=3D"fu">{</span></a>
+<a class=3D"sourceLine" id=3D"cb3-2" title=3D"2">    <span class=3D"dt">"Ve=
+rsion"</span><span class=3D"fu">:</span> <span class=3D"st">"2012-10-17"</s=
+pan><span class=3D"fu">,</span></a>
+<a class=3D"sourceLine" id=3D"cb3-3" title=3D"3">    <span class=3D"dt">"St=
+atement"</span><span class=3D"fu">:</span> <span class=3D"ot">[</span></a>
+<a class=3D"sourceLine" id=3D"cb3-4" title=3D"4">        <span class=3D"fu"=
+>{</span></a>
+<a class=3D"sourceLine" id=3D"cb3-5" title=3D"5">            <span class=3D=
+"dt">"Sid"</span><span class=3D"fu">:</span> <span class=3D"st">"AllowS3Rea=
+dAccess"</span><span class=3D"fu">,</span></a>
+<a class=3D"sourceLine" id=3D"cb3-6" title=3D"6">            <span class=3D=
+"dt">"Effect"</span><span class=3D"fu">:</span> <span class=3D"st">"Allow"<=
+/span><span class=3D"fu">,</span></a>
+<a class=3D"sourceLine" id=3D"cb3-7" title=3D"7">            <span class=3D=
+"dt">"Principal"</span><span class=3D"fu">:</span> <span class=3D"fu">{</sp=
+an></a>
+<a class=3D"sourceLine" id=3D"cb3-8" title=3D"8">                <span clas=
+s=3D"dt">"AWS"</span><span class=3D"fu">:</span> <span class=3D"st">"arn:aw=
+s:iam::123456789012:role/S3DynamoDBFullAccessRole"</span></a>
+<a class=3D"sourceLine" id=3D"cb3-9" title=3D"9">            <span class=3D=
+"fu">},</span></a>
+<a class=3D"sourceLine" id=3D"cb3-10" title=3D"10">            <span class=
+=3D"dt">"Action"</span><span class=3D"fu">:</span> <span class=3D"st">"s3:*=
+"</span><span class=3D"fu">,</span></a>
+<a class=3D"sourceLine" id=3D"cb3-11" title=3D"11">            <span class=
+=3D"dt">"Resource"</span><span class=3D"fu">:</span> <span class=3D"ot">[</=
+span></a>
+<a class=3D"sourceLine" id=3D"cb3-12" title=3D"12">                <span cl=
+ass=3D"st">"arn:aws:s3:::employee-photo-bucket-al-907"</span><span class=3D=
+"ot">,</span></a>
+<a class=3D"sourceLine" id=3D"cb3-13" title=3D"13">                <span cl=
+ass=3D"st">"arn:aws:s3:::employee-photo-bucket-al-907/*"</span></a>
+<a class=3D"sourceLine" id=3D"cb3-14" title=3D"14">            <span class=
+=3D"ot">]</span></a>
+<a class=3D"sourceLine" id=3D"cb3-15" title=3D"15">        <span class=3D"f=
+u">}</span></a>
+<a class=3D"sourceLine" id=3D"cb3-16" title=3D"16">    <span class=3D"ot">]=
+</span></a>
+<a class=3D"sourceLine" id=3D"cb3-17" title=3D"17"><span class=3D"fu">}</sp=
+an></a></code></pre><button class=3D"btn copybtn" data-clipboard-target=3D"=
+#codeblock2"><img class=3D"clipboard" src=3D"https://aws-tc-largeobjects.s3=
+-us-west-2.amazonaws.com/DEV-AWS-MO-GCNv2/images/clipboard.svg" width=3D"13=
+" alt=3D"Copy to clipboard"></button></div></li>
+<li><p>Choose <strong>Save changes</strong>.</p></li>
+</ol>
+<h2 id=3D"task-4-modifying-the-application-to-use-the-s3-bucket">Task 4: Mo=
+difying the application to use the S3 bucket</h2>
+<p>In this task, you will launch another EC2 instance. This time, you will =
+modify the user data script so that the application uses the S3 bucket.</p>
+<ol type=3D"1">
+<li><p>In the <strong>Services</strong> search box, enter <code>EC2</code> =
+and open the service by choosing <strong>EC2</strong>.</p></li>
+<li><p>In the navigation pane, under <strong>Instances</strong>, choose <st=
+rong>Instances</strong>.</p></li>
+<li><p>Select the <code>employee-directory-app</code> instance, which shoul=
+d be in the <em>Stopped</em> state.</p></li>
+<li><p>Choose <strong>Actions</strong> and then choose <strong>Image and te=
+mplates</strong>, <strong>Launch more like this</strong>.</p></li>
+<li><p>For <strong>Name</strong> and at the end of the <strong>Value</stron=
+g>, append <code>-s3</code>.</p>
+<p>Example:</p>
+<div class=3D"sourceCode" id=3D"cb4"><pre class=3D"sourceCode bash" id=3D"c=
+odeblock3"><code class=3D"sourceCode bash"><a class=3D"sourceLine" id=3D"cb=
+4-1" title=3D"1">   <span class=3D"ex">employee-directory-app-s3</span></a>=
+</code></pre><button class=3D"btn copybtn" data-clipboard-target=3D"#codebl=
+ock3"><img class=3D"clipboard" src=3D"https://aws-tc-largeobjects.s3-us-wes=
+t-2.amazonaws.com/DEV-AWS-MO-GCNv2/images/clipboard.svg" width=3D"13" alt=
+=3D"Copy to clipboard"></button></div></li>
+<li><p>For <strong>Key pair name</strong>, select <strong>app-key-pair</str=
+ong>.</p></li>
+<li><p>Under <strong>Network settings</strong> and <strong>Auto-assign Publ=
+ic IP</strong>, choose <strong>Enable</strong>.</p></li>
+<li><p>Scroll down and expand <strong>Advanced Details</strong>.</p></li>
+<li><p>In the <strong>User data</strong> box, update the values for the <co=
+de>PHOTOS_BUCKET</code> variable and (if needed) the <code>AWS_DEFAULT_REGI=
+ON</code> variable.</p>
+<div class=3D"sourceCode" id=3D"cb5"><pre class=3D"sourceCode bash" id=3D"c=
+odeblock4"><code class=3D"sourceCode bash"><a class=3D"sourceLine" id=3D"cb=
+5-1" title=3D"1"><span class=3D"co">#!/bin/bash -ex</span></a>
+<a class=3D"sourceLine" id=3D"cb5-2" title=3D"2"><span class=3D"fu">wget</s=
+pan> https://aws-tc-largeobjects.s3-us-west-2.amazonaws.com/DEV-AWS-MO-GCNv=
+2/FlaskApp.zip</a>
+<a class=3D"sourceLine" id=3D"cb5-3" title=3D"3"><span class=3D"fu">unzip</=
+span> FlaskApp.zip</a>
+<a class=3D"sourceLine" id=3D"cb5-4" title=3D"4"><span class=3D"bu">cd</spa=
+n> FlaskApp/</a>
+<a class=3D"sourceLine" id=3D"cb5-5" title=3D"5"><span class=3D"ex">yum</sp=
+an> -y install python3 mysql</a>
+<a class=3D"sourceLine" id=3D"cb5-6" title=3D"6"><span class=3D"ex">pip3</s=
+pan> install -r requirements.txt</a>
+<a class=3D"sourceLine" id=3D"cb5-7" title=3D"7"><span class=3D"ex">amazon-=
+linux-extras</span> install epel</a>
+<a class=3D"sourceLine" id=3D"cb5-8" title=3D"8"><span class=3D"ex">yum</sp=
+an> -y install stress</a>
+<a class=3D"sourceLine" id=3D"cb5-9" title=3D"9"><span class=3D"bu">export<=
+/span> <span class=3D"va">PHOTOS_BUCKET=3D</span><span class=3D"op">&lt;</s=
+pan><span class=3D"ex">INSERT-BUCKET-NAME-HERE</span><span class=3D"op">&gt=
+;</span></a>
+<a class=3D"sourceLine" id=3D"cb5-10" title=3D"10"><span class=3D"bu">expor=
+t</span> <span class=3D"va">AWS_DEFAULT_REGION=3D</span><span class=3D"op">=
+&lt;</span><span class=3D"ex">INSERT-REGION-NAME-HERE</span><span class=3D"=
+op">&gt;</span></a>
+<a class=3D"sourceLine" id=3D"cb5-11" title=3D"11"><span class=3D"bu">expor=
+t</span> <span class=3D"va">DYNAMO_MODE=3D</span>on</a>
+<a class=3D"sourceLine" id=3D"cb5-12" title=3D"12"><span class=3D"va">FLASK=
+_APP=3D</span>application.py <span class=3D"ex">/usr/local/bin/flask</span>=
+ run --host=3D0.0.0.0 --port=3D80</a></code></pre><button class=3D"btn copy=
+btn" data-clipboard-target=3D"#codeblock4"><img class=3D"clipboard" src=3D"=
+https://aws-tc-largeobjects.s3-us-west-2.amazonaws.com/DEV-AWS-MO-GCNv2/ima=
+ges/clipboard.svg" width=3D"13" alt=3D"Copy to clipboard"></button></div>
+<p>Example:</p>
+<p>This example uses a sample bucket name.</p>
+<div class=3D"sourceCode" id=3D"cb6"><pre class=3D"sourceCode bash" id=3D"c=
+odeblock5"><code class=3D"sourceCode bash"><a class=3D"sourceLine" id=3D"cb=
+6-1" title=3D"1"><span class=3D"bu">export</span> <span class=3D"va">PHOTOS=
+_BUCKET=3D</span>employee-photo-bucket-al-907</a></code></pre><button class=
+=3D"btn copybtn" data-clipboard-target=3D"#codeblock5"><img class=3D"clipbo=
+ard" src=3D"https://aws-tc-largeobjects.s3-us-west-2.amazonaws.com/DEV-AWS-=
+MO-GCNv2/images/clipboard.svg" width=3D"13" alt=3D"Copy to clipboard"></but=
+ton></div></li>
+<li><p>Choose <strong>Launch instance</strong>.</p></li>
+<li><p>Choose <strong>View all instances</strong>.</p>
+<p>The new instance should now be in the <strong>Instances</strong> list.</=
+p></li>
+<li><p>Wait for the <strong>Instance state</strong> to change to <em>Runnin=
+g</em> and the <em>Status check</em> to change to <em>2/2 checks passed</em=
+>.</p>
+<p><strong>Note</strong>: You can refresh the page to update the instance s=
+tatus.</p></li>
+<li><p>If needed, clear the check box for the stopped instance that you cre=
+ated previously.</p></li>
+<li><p>Select the check box for the <strong>employee-directory-app-s3</stro=
+ng> instance.</p></li>
+<li><p>Copy the <strong>Public IPv4 address</strong>.</p>
+<p><strong>Note</strong>: Make sure that you only copy the address instead =
+of choosing the <strong>open address</strong> link.</p></li>
+<li><p>In a new browser window, paste the IP address that you copied. <em>M=
+ake sure to remove the =E2=80=98S=E2=80=99 after HTTP so you are using only=
+ HTTP instead</em>.</p></li>
+</ol>
+<p>You should see an <strong>Employee Directory</strong> placeholder. You w=
+on=E2=80=99t be able to interact with the application yet because it=E2=80=
+=99s not connected to a database.</p>
+<p>Congratulations! You launched an EC2 instance that uses the S3 bucket yo=
+u created.</p>
+<h2 id=3D"task-5-deleting-the-object-from-the-s3-bucket">Task 5: Deleting t=
+he object from the S3 bucket</h2>
+<p>In this task, you will delete the object that you uploaded to the S3 buc=
+ket.</p>
+<ol type=3D"1">
+<li><p>Open the Amazon S3 console by searching for and choosing <strong>S3<=
+/strong>.</p></li>
+<li><p>Open the bucket details by choosing the <code>employee-photo-bucket-=
+</code> link.</p></li>
+<li><p>Select the check box for your object.</p></li>
+<li><p>Choose <strong>Delete</strong> and confirm the deletion by entering =
+<code>permanently delete</code>.</p></li>
+<li><p>Choose <strong>Delete objects</strong> and then choose <strong>Close=
+</strong>.</p></li>
+</ol>
+<h2 id=3D"task-6-stopping-your-ec2-instance">Task 6: Stopping your EC2 inst=
+ance</h2>
+<p>In this task, you will now stop the instance to prevent future costs.</p=
+>
+<p><strong>Note</strong>: Don=E2=80=99t terminate the instance because you =
+will use this instance in a later exercise.</p>
+<ol type=3D"1">
+<li><p>Return to the Amazon EC2 console by searching for and choosing <stro=
+ng>EC2</strong>.</p></li>
+<li><p>If needed, in the navigation pane, choose <strong>Instances</strong>=
+.</p></li>
+<li><p>Select the check box for the <strong>employee-directory-app-s3</stro=
+ng> instance.</p></li>
+<li><p>Choose <strong>Instance state</strong> and then choose <strong>Stop =
+instance</strong>.</p></li>
+<li><p>In the dialog box, choose <strong>Stop</strong>.</p></li>
+</ol>
+<p>The <strong>Instance state</strong> will eventually go into the <em>Stop=
+ped</em> state.</p>
+
+
+<footer>
+    <p>=C2=A9 2022 Amazon Web Services, Inc. or its affiliates. All rights =
+reserved. This work may not be reproduced or redistributed, in whole or in =
+part, without prior written permission from Amazon Web Services, Inc. Comme=
+rcial copying, lending, or selling is prohibited. Corrections, feedback, or=
+ other questions? Contact us at <a href=3D"https://support.aws.amazon.com/#=
+/contacts/aws-training" target=3D"_blank">https://support.aws.amazon.com/#/=
+contacts/aws-training</a>. All trademarks are the property of their owners.=
+</p>
+</footer>
+
+</body><grammarly-desktop-integration data-grammarly-shadow-root=3D"true"><=
+template shadowmode=3D"open"><div aria-label=3D"grammarly-integration" role=
+=3D"group" tabindex=3D"-1" class=3D"grammarly-desktop-integration" data-con=
+tent=3D"{&quot;mode&quot;:&quot;full&quot;,&quot;isActive&quot;:true,&quot;=
+isUserDisabled&quot;:false}"></div></template></grammarly-desktop-integrati=
+on></html>
+------MultipartBoundary--LSR5AGg9J2wF6WPBypmscIHK3lD6NAvGgtcFnc1Txf----
+Content-Type: text/css
+Content-Transfer-Encoding: quoted-printable
+Content-Location: cid:css-7595c1f9-34f1-406d-a8e0-345514946462@mhtml.blink
+
+@charset "utf-8";
+
+html, body, footer { font-family: "Open Sans", "Helvetica Neue", Helvetica,=
+ Arial, sans-serif; margin: 1em; }
+
+img:not(.clipboard) { max-width: 100%; height: auto; width: auto; }
+
+button.copybtn { transition: opacity 0.3s ease-in-out 0s; opacity: 0; paddi=
+ng: 2px 6px; position: absolute; right: 4px; top: 4px; }
+
+div.sourceCode:hover .copybtn, div.sourceCode .copybtn:focus { opacity: 0.3=
+; }
+
+div.sourceCode .copybtn:hover { opacity: 1; }
+
+div.sourceCode { position: relative; }
+
+.xmodule_display.xmodule_HtmlBlock ol { padding: 0px 0px 0px 2em !important=
+; }
+
+.xmodule_display.xmodule_HtmlBlock ul { padding: 0px 0px 0px 2em !important=
+; }
+
+code { border-radius: 4px; padding: 2px 4px !important; background-color: r=
+gb(238, 238, 238) !important; }
+
+pre code { display: block; overflow-x: auto; margin: 0px 0px 10px; font-siz=
+e: 13px; line-height: 1.42857; word-break: break-all; overflow-wrap: break-=
+word; border: 1px solid rgb(204, 204, 204); border-radius: 4px; white-space=
+: pre; padding: 9.5px !important; background-color: rgb(245, 245, 245) !imp=
+ortant; }
+
+pre code span.al { color: rgb(255, 0, 0); font-weight: bold; }
+
+pre code span.an { color: rgb(96, 160, 176); font-weight: bold; font-style:=
+ italic; }
+
+pre code span.at { color: rgb(125, 144, 41); }
+
+pre code span.bn { color: rgb(64, 160, 112); }
+
+pre code span.bu { color: rgb(6, 40, 126); }
+
+pre code span.cf { color: rgb(0, 112, 32); font-weight: bold; }
+
+pre code span.ch { color: rgb(64, 112, 160); }
+
+pre code span.cn { color: rgb(136, 0, 0); }
+
+pre code span.co { color: rgb(96, 160, 176); font-style: italic; }
+
+pre code span.cv { color: rgb(96, 160, 176); font-weight: bold; font-style:=
+ italic; }
+
+pre code span.do { color: rgb(186, 33, 33); font-style: italic; }
+
+pre code span.dt { color: rgb(144, 32, 0); }
+
+pre code span.dv { color: rgb(64, 160, 112); }
+
+pre code span.er { color: rgb(255, 0, 0); font-weight: bold; }
+
+pre code span.ex { color: rgb(6, 40, 126); }
+
+pre code span.fl { color: rgb(64, 160, 112); }
+
+pre code span.fu { color: rgb(6, 40, 126); }
+
+pre code span.im { }
+
+pre code span.in { color: rgb(96, 160, 176); font-weight: bold; font-style:=
+ italic; }
+
+pre code span.kw { color: rgb(0, 112, 32); font-weight: bold; }
+
+pre code span.op { color: rgb(102, 102, 102); }
+
+pre code span.ot { color: rgb(0, 112, 32); }
+
+pre code span.pp { color: rgb(188, 122, 0); }
+
+pre code span.sc { color: rgb(64, 112, 160); }
+
+pre code span.ss { color: rgb(187, 102, 136); }
+
+pre code span.st { color: rgb(64, 112, 160); }
+
+pre code span.va { color: rgb(25, 23, 124); }
+
+pre code span.vs { color: rgb(64, 112, 160); }
+
+pre code span.wa { color: rgb(96, 160, 176); font-weight: bold; font-style:=
+ italic; }
+
+footer { padding-top: 3em; font-style: italic; font-size: 0.9em; }
+------MultipartBoundary--LSR5AGg9J2wF6WPBypmscIHK3lD6NAvGgtcFnc1Txf----
+Content-Type: image/svg+xml
+Content-Transfer-Encoding: quoted-printable
+Content-Location: https://aws-tc-largeobjects.s3-us-west-2.amazonaws.com/DEV-AWS-MO-GCNv2/images/clipboard.svg
+
+<svg height=3D"1024" width=3D"896" xmlns=3D"http://www.w3.org/2000/svg">
+  <path d=3D"M128 768h256v64H128v-64z m320-384H128v64h320v-64z m128 192V448=
+L384 640l192 192V704h320V576H576z m-288-64H128v64h160v-64zM128 704h160v-64H=
+128v64z m576 64h64v128c-1 18-7 33-19 45s-27 18-45 19H64c-35 0-64-29-64-64V1=
+92c0-35 29-64 64-64h192C256 57 313 0 384 0s128 57 128 128h192c35 0 64 29 64=
+ 64v320h-64V320H64v576h640V768zM128 256h512c0-35-29-64-64-64h-64c-35 0-64-2=
+9-64-64s-29-64-64-64-64 29-64 64-29 64-64 64h-64c-35 0-64 29-64 64z" />
+</svg>=0A
+------MultipartBoundary--LSR5AGg9J2wF6WPBypmscIHK3lD6NAvGgtcFnc1Txf------

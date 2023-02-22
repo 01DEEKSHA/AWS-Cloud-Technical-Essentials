@@ -1,0 +1,694 @@
+From: <Saved by Blink>
+Snapshot-Content-Location: https://aws-tc-largeobjects.s3.us-west-2.amazonaws.com/DEV-AWS-MO-GCNv2/exercise-7-elb.html
+Subject: Exercise 7: ELB
+Date: Wed, 22 Feb 2023 10:53:02 -0000
+MIME-Version: 1.0
+Content-Type: multipart/related;
+	type="text/html";
+	boundary="----MultipartBoundary--nDQa27HjiEyh2Xj0EovE9nUrAfPGgGnKSFBsITYxlX----"
+
+
+------MultipartBoundary--nDQa27HjiEyh2Xj0EovE9nUrAfPGgGnKSFBsITYxlX----
+Content-Type: text/html
+Content-ID: <frame-91131B1F5EC3142BC7424E4FB7471BD7@mhtml.blink>
+Content-Transfer-Encoding: quoted-printable
+Content-Location: https://aws-tc-largeobjects.s3.us-west-2.amazonaws.com/DEV-AWS-MO-GCNv2/exercise-7-elb.html
+
+<!DOCTYPE html><html xmlns=3D"http://www.w3.org/1999/xhtml" lang=3D"" xml:l=
+ang=3D""><head><meta http-equiv=3D"Content-Type" content=3D"text/html; char=
+set=3DUTF-8"><link rel=3D"stylesheet" type=3D"text/css" href=3D"cid:css-f2b=
+b614c-b058-460e-bfbc-49414aba8b15@mhtml.blink" />
+ =20
+  <meta name=3D"generator" content=3D"pandoc">
+  <meta name=3D"viewport" content=3D"width=3Ddevice-width, initial-scale=3D=
+1.0, user-scalable=3Dyes">
+  <title>Exercise 7: ELB</title>
+ =20
+ =20
+
+
+</head><body data-new-gr-c-s-check-loaded=3D"14.1097.0" data-gr-ext-install=
+ed=3D"">
+<p><em>[version_1.1]</em></p>
+<div style=3D"background-color: #FFD2D2; padding: 15px; margin-bottom: 25px=
+">
+<h3>
+<span class=3D"fa fa-info-circle"></span> Note
+</h3>
+<p>The exercises in this course will have an associated charge in your AWS =
+account. In this exercise, you create or use the following resources:</p>
+<ul>
+<li>AWS Identity and Access Management (IAM) policy and user (policies and =
+users are AWS account features, offered at no additional charge)</li>
+<li>Amazon Elastic Compute Cloud (Amazon EC2) instance</li>
+<li>Elastic Load Balancing (ELB) load balancer</li>
+<li>AWS Auto Scaling</li>
+<li>Amazon Simple Notification Service (Amazon SNS) topic</li>
+</ul>
+<p>Familiarize yourself with <strong><a href=3D"https://aws.amazon.com/ec2/=
+pricing/" target=3D"_blank">Amazon EC2 pricing</a></strong>, <strong><a hre=
+f=3D"https://aws.amazon.com/elasticloadbalancing/pricing/" target=3D"_blank=
+">Elastic Load Balancing pricing</a></strong>, <strong><a href=3D"https://a=
+ws.amazon.com/autoscaling/pricing/" target=3D"_blank">AWS Auto Scaling pric=
+ing</a></strong>, <strong><a href=3D"https://aws.amazon.com/sns/pricing/" t=
+arget=3D"_blank">Amazon SNS pricing</a></strong>, and the <strong><a href=
+=3D"https://aws.amazon.com/free/" target=3D"_blank">AWS Free Tier</a></stro=
+ng>.</p>
+</div>
+<h1 id=3D"exercise-7-load-balancing-and-auto-scaling">Exercise 7: Load Bala=
+ncing and Auto Scaling</h1>
+<p>For this scenario, you are tasked with setting up an ELB load balancer a=
+nd an Auto Scaling group so that your application can scale horizontally.</=
+p>
+<p>In this exercise, you first launch another EC2 instance. You then create=
+ an Application Load Balancer and a launch template. Next, you set up an Au=
+to Scaling group that uses the load balancer and launch template that you c=
+reated. Finally, you test and stress the application, and watch your applic=
+ation scale in real time.</p>
+<h2 id=3D"task-1-launching-an-ec2-instance">Task 1: Launching an EC2 instan=
+ce</h2>
+<p>In this task, you will launch an EC2 instance that hosts the application=
+.</p>
+<ol type=3D"1">
+<li><p>If needed, log in to the AWS Management Console as your <em>Admin</e=
+m> user.</p></li>
+<li><p>Search for and open <strong>EC2</strong>.</p></li>
+<li><p>In the navigation pane, choose <strong>Instances</strong>.</p></li>
+<li><p>Select the check box for the <strong>employee-directory-app-exercise=
+6</strong> instance, which should be in the <em>Stopped</em> state.</p></li=
+>
+<li><p>Choose <strong>Actions</strong> and then choose <strong>Image and te=
+mplates</strong>, <strong>Launch more like this</strong>.</p></li>
+<li><p>For <strong>Name</strong> and at the end of the <strong>Value</stron=
+g>, append <code>-exercise7</code>.</p>
+<p>Example:</p>
+<div class=3D"sourceCode" id=3D"cb1"><pre class=3D"sourceCode bash" id=3D"c=
+odeblock0"><code class=3D"sourceCode bash"><a class=3D"sourceLine" id=3D"cb=
+1-1" title=3D"1">   <span class=3D"ex">employee-directory-app-exercise7</sp=
+an></a></code></pre><button class=3D"btn copybtn" data-clipboard-target=3D"=
+#codeblock0"><img class=3D"clipboard" src=3D"https://aws-tc-largeobjects.s3=
+.us-west-2.amazonaws.com/DEV-AWS-MO-GCNv2/images/clipboard.svg" width=3D"13=
+" alt=3D"Copy to clipboard"></button></div></li>
+<li><p>For <strong>Key pair name</strong>, select <strong>app-key-pair</str=
+ong>.</p></li>
+<li><p>Under <strong>Network settings</strong> and <strong>Auto-assign Publ=
+ic IP</strong>, choose <strong>Enable</strong>.</p></li>
+<li><p>Choose <strong>Launch instance</strong>.</p></li>
+<li><p>Choose <strong>View all instances</strong>.</p>
+<p>The instance should now be in the <strong>Instances</strong> list.</p></=
+li>
+<li><p>Wait for the <strong>Instance state</strong> to change to <em>Runnin=
+g</em> and the <strong>Status check</strong> to change to <em>2/2 checks pa=
+ssed</em>.</p></li>
+<li><p>Select the check box for <strong>employee-directory-app-exercise7</s=
+trong>.</p></li>
+<li><p>On the <strong>Details</strong> tab, copy the <strong>Public IPv4 ad=
+dress</strong> and paste it into a new browser window.</p></li>
+<li><p>In a new browser window, paste the IP address that you copied. <em>M=
+ake sure to remove the =E2=80=98S=E2=80=99 after HTTP so you are using only=
+ HTTP instead</em>.</p></li>
+</ol>
+<h2 id=3D"task-2-creating-the-application-load-balancer">Task 2: Creating t=
+he Application Load Balancer</h2>
+<p>In this task, you will create the Application Load Balancer.</p>
+<ol type=3D"1">
+<li><p>Return to the Amazon EC2 console.</p></li>
+<li><p>In the navigation pane, under <strong>Load Balancing</strong>, choos=
+e <strong>Load Balancers</strong>.</p></li>
+<li><p>Choose <strong>Create Load Balancer</strong>.</p></li>
+<li><p>On the <strong>Application Load Balancer</strong> card, choose <stro=
+ng>Create</strong>.</p></li>
+<li>Configure the following load balancer settings.
+<ul>
+<li><strong>Load balancer name</strong>: <code>app-alb</code></li>
+<li><strong>VPC</strong>: <em>app-vpc</em></li>
+<li><strong>Mappings</strong>: Select both Availability Zones
+<ul>
+<li>Example: If you are in US West (Oregon), you would select both <em>us-w=
+est-2a</em> and <em>us-west-2b</em></li>
+</ul></li>
+<li><strong>First Availability Zone Subnet</strong>: <em>Public Subnet 1</e=
+m></li>
+<li><strong>Second Availability Zone Subnet</strong>: <em>Public Subnet 2</=
+em></li>
+</ul></li>
+<li><p>In the <strong>Security groups</strong> section, remove the default =
+security group (by choosing the <strong>X</strong>) and choose <strong>Crea=
+te new security group</strong>.</p>
+<p>A new window opens for creating a security group.</p></li>
+<li>Configure the following security group settings:
+<ul>
+<li><strong>Security group name</strong>: <code>load-balancer-sg</code></li=
+>
+<li><strong>Description</strong>: <code>HTTP access</code></li>
+<li><strong>VPC</strong>: If needed, paste the VPC ID for <em>app-vpc</em> =
+and choose it when it appears under the box
+<ul>
+<li><strong>Note:</strong> You can find the <em>app-vpc</em> ID by opening =
+the VPC console in a new window</li>
+</ul></li>
+<li><strong>Inbound rules</strong>: <em>Add Rule</em>
+<ul>
+<li><strong>Type</strong>: <em>HTTP</em></li>
+<li><strong>Source</strong>: <em>Anywhere-IPv4</em></li>
+</ul></li>
+</ul></li>
+<li><p>Choose <strong>Create security group</strong>.</p></li>
+<li><p>Close the security group browser window or return to the <strong>Loa=
+d balancers</strong> window.</p></li>
+<li><p>For <strong>Security groups</strong>, add the new <strong>load-balan=
+cer-sg</strong> group. <strong>Note:</strong> To see the new security group=
+, you might need to refresh the <strong>Security groups</strong> list.</p><=
+/li>
+<li><p>In <strong>Listeners and routing</strong>, choose <strong>Create tar=
+get group</strong>.</p>
+<p>A new window opens for creating a target group.</p></li>
+<li>For <strong>Specify group details</strong>, configure the following set=
+tings.
+<ul>
+<li><strong>Choose a target type</strong>: Keep <em>Instances</em> selected=
+</li>
+<li><strong>Target group name</strong>: <code>app-target-group</code></li>
+<li><strong>Health checks</strong>: Expand <em>Advanced health check settin=
+gs</em> and configure the following:
+<ul>
+<li><strong>Healthy threshold</strong>: <code>2</code></li>
+<li><strong>Unhealthy threshold</strong>: <code>5</code></li>
+<li><strong>Timeout</strong>:<code>30</code></li>
+<li><strong>Interval</strong>: <code>40</code></li>
+</ul></li>
+</ul></li>
+<li><p>Choose <strong>Next</strong>.</p></li>
+<li><p>For <strong>Register targets</strong>, select <strong>employee-direc=
+tory-app-exercise7</strong> and choose <strong>Include as pending below</st=
+rong>.</p></li>
+<li><p>Choose <strong>Create target group</strong>.</p></li>
+<li><p>Close the target groups window or return to the <strong>Load balance=
+rs</strong> window.</p></li>
+<li><p>Under <strong>Listeners and routing</strong>, refresh the available =
+listener and choose <strong>app-target-group</strong>.</p></li>
+<li><p>Finally, choose <strong>Create load balancer</strong>.</p></li>
+<li><p>Choose <strong>View load balancer</strong>.</p></li>
+<li><p>Make sure that <strong>app-alb</strong> is selected and wait for the=
+ load balancer <strong>State</strong> to become <em>Active</em>.</p></li>
+<li><p>On the <strong>Description</strong> tab, copy <strong>DNS name</stro=
+ng> and paste it into a text editor of your choice.</p></li>
+<li><p>In the text editor, at the beginning of the URL, add <code>http://</=
+code>.</p>
+<p>Example:</p>
+<p><code>http://app-elb-123456789012.us-west-2.elb.amazonaws.com</code></p>=
+</li>
+<li><p>Copy the DNS name (with <code>http://</code> added) and paste it int=
+o a new browser window.</p></li>
+</ol>
+<p>You should see the employee directory application.</p>
+<h2 id=3D"task-3-creating-the-launch-template">Task 3: Creating the launch =
+template</h2>
+<p>Now that you can access your application from a singular DNS name, you c=
+an scale the application horizontally. To scale horizontally, you need a la=
+unch template. In this task, you will create a launch template.</p>
+<ol type=3D"1">
+<li><p>Back in the console, if needed, search for and open <strong>EC2</str=
+ong>.</p></li>
+<li><p>In the navigation pane, under <strong>Instances</strong>, choose <st=
+rong>Launch Templates</strong>.</p></li>
+<li>Choose <strong>Create launch template</strong> and configure the follow=
+ing settings.
+<ul>
+<li><strong>Launch template name</strong>: <code>app-launch-template</code>=
+</li>
+<li><strong>Template version description</strong>: <code>A web server for t=
+he employee directory application</code></li>
+<li><strong>Auto Scaling guidance</strong>: <em>Provide guidance to help me=
+ set up a template that I can use with EC2 Auto Scaling</em></li>
+<li><strong>Application and OS Images (Amazon Machine Image) - required</st=
+rong>: <em>Currently in use</em></li>
+<li><strong>Instance type</strong>: <em>t2.micro</em></li>
+<li><strong>Key pair name</strong>: <em>app-key-pair</em></li>
+<li><strong>Security groups</strong>: <em>web-security-group</em></li>
+</ul></li>
+<li><p>Expand the <strong>Advanced details</strong> section.</p></li>
+<li><p>For <strong>IAM instance profile</strong>, choose <strong>S3DynamoDB=
+FullAccessRole</strong>.</p></li>
+<li><p>Scroll to <strong>User data</strong> and paste the following code:</=
+p>
+<div class=3D"sourceCode" id=3D"cb2"><pre class=3D"sourceCode bash" id=3D"c=
+odeblock1"><code class=3D"sourceCode bash"><a class=3D"sourceLine" id=3D"cb=
+2-1" title=3D"1"><span class=3D"co">#!/bin/bash -ex</span></a>
+<a class=3D"sourceLine" id=3D"cb2-2" title=3D"2"><span class=3D"fu">wget</s=
+pan> https://aws-tc-largeobjects.s3-us-west-2.amazonaws.com/DEV-AWS-MO-GCNv=
+2/FlaskApp.zip</a>
+<a class=3D"sourceLine" id=3D"cb2-3" title=3D"3"><span class=3D"fu">unzip</=
+span> FlaskApp.zip</a>
+<a class=3D"sourceLine" id=3D"cb2-4" title=3D"4"><span class=3D"bu">cd</spa=
+n> FlaskApp/</a>
+<a class=3D"sourceLine" id=3D"cb2-5" title=3D"5"><span class=3D"ex">yum</sp=
+an> -y install python3 mysql</a>
+<a class=3D"sourceLine" id=3D"cb2-6" title=3D"6"><span class=3D"ex">pip3</s=
+pan> install -r requirements.txt</a>
+<a class=3D"sourceLine" id=3D"cb2-7" title=3D"7"><span class=3D"ex">amazon-=
+linux-extras</span> install epel</a>
+<a class=3D"sourceLine" id=3D"cb2-8" title=3D"8"><span class=3D"ex">yum</sp=
+an> -y install stress</a>
+<a class=3D"sourceLine" id=3D"cb2-9" title=3D"9"><span class=3D"bu">export<=
+/span> <span class=3D"va">PHOTOS_BUCKET=3D${SUB_PHOTOS_BUCKET}</span></a>
+<a class=3D"sourceLine" id=3D"cb2-10" title=3D"10"><span class=3D"bu">expor=
+t</span> <span class=3D"va">AWS_DEFAULT_REGION=3D</span><span class=3D"op">=
+&lt;</span><span class=3D"ex">INSERT</span> REGION HERE<span class=3D"op">&=
+gt;</span></a>
+<a class=3D"sourceLine" id=3D"cb2-11" title=3D"11"><span class=3D"bu">expor=
+t</span> <span class=3D"va">DYNAMO_MODE=3D</span>on</a>
+<a class=3D"sourceLine" id=3D"cb2-12" title=3D"12"><span class=3D"va">FLASK=
+_APP=3D</span>application.py <span class=3D"ex">/usr/local/bin/flask</span>=
+ run --host=3D0.0.0.0 --port=3D80</a></code></pre><button class=3D"btn copy=
+btn" data-clipboard-target=3D"#codeblock1"><img class=3D"clipboard" src=3D"=
+https://aws-tc-largeobjects.s3.us-west-2.amazonaws.com/DEV-AWS-MO-GCNv2/ima=
+ges/clipboard.svg" width=3D"13" alt=3D"Copy to clipboard"></button></div></=
+li>
+<li><p>In the user data code, replace the <code>PHOTOS_BUCKET</code> placeh=
+older value with the name of your bucket.</p>
+<p>Example:</p>
+<div class=3D"sourceCode" id=3D"cb3"><pre class=3D"sourceCode bash" id=3D"c=
+odeblock2"><code class=3D"sourceCode bash"><a class=3D"sourceLine" id=3D"cb=
+3-1" title=3D"1"><span class=3D"bu">export</span> <span class=3D"va">PHOTOS=
+_BUCKET=3D</span>employee-photo-bucket-al-907</a></code></pre><button class=
+=3D"btn copybtn" data-clipboard-target=3D"#codeblock2"><img class=3D"clipbo=
+ard" src=3D"https://aws-tc-largeobjects.s3.us-west-2.amazonaws.com/DEV-AWS-=
+MO-GCNv2/images/clipboard.svg" width=3D"13" alt=3D"Copy to clipboard"></but=
+ton></div></li>
+<li><p>Replace the <code>AWS_DEFAULT_REGION</code> placeholder value with y=
+our Region (the Region is listed at the top right, next to your user name).=
+</p>
+<p>Example:</p>
+<p>This example uses US West (Oregon) (<em>us-west-2</em>) as the Region.</=
+p>
+<div class=3D"sourceCode" id=3D"cb4"><pre class=3D"sourceCode bash" id=3D"c=
+odeblock3"><code class=3D"sourceCode bash"><a class=3D"sourceLine" id=3D"cb=
+4-1" title=3D"1"><span class=3D"bu">export</span> <span class=3D"va">AWS_DE=
+FAULT_REGION=3D</span>us-west-2</a></code></pre><button class=3D"btn copybt=
+n" data-clipboard-target=3D"#codeblock3"><img class=3D"clipboard" src=3D"ht=
+tps://aws-tc-largeobjects.s3.us-west-2.amazonaws.com/DEV-AWS-MO-GCNv2/image=
+s/clipboard.svg" width=3D"13" alt=3D"Copy to clipboard"></button></div></li=
+>
+<li><p>Choose <strong>Create launch template</strong>.</p></li>
+<li><p>Choose <strong>View Launch templates</strong>.</p></li>
+</ol>
+<h2 id=3D"task-4-creating-the-auto-scaling-group">Task 4: Creating the Auto=
+ Scaling group</h2>
+<p>In this task, you will create the Auto Scaling group.</p>
+<ol type=3D"1">
+<li><p>In the navigation pane, under <strong>Auto Scaling</strong>, choose =
+<strong>Auto Scaling Groups</strong>.</p></li>
+<li><p>Choose <strong>Create Auto Scaling group</strong>.</p></li>
+<li>For <strong>Choose launch template or configuration</strong>, configure=
+ these settings:
+<ul>
+<li><strong>Auto Scaling group name</strong>: <code>app-asg</code></li>
+<li><strong>Launch template</strong>: <em>app-launch-template</em></li>
+</ul></li>
+<li><p>Choose <strong>Next</strong>.</p></li>
+<li>For <strong>Choose instance launch options</strong>, configure these se=
+ttings:
+<ul>
+<li><strong>VPC</strong>: <em>app-vpc</em><br>
+</li>
+<li><strong>Availability Zones and subnets</strong>: Choose the Availabilit=
+y Zones with <em>Public Subnet 1</em> and <em>Public Subnet 2</em></li>
+</ul></li>
+<li><p>Choose <strong>Next</strong>.</p></li>
+<li>For <strong>Configure advanced options</strong>, use these settings:
+<ul>
+<li><strong>Load balancing</strong>: <em>Attach to an existing load balance=
+r</em><br>
+</li>
+<li><strong>Attach to an existing load balancer</strong>: <em>Choose from y=
+our load balancer target groups</em></li>
+<li><strong>Existing load balancer target groups</strong>: <em>app-target-g=
+roup</em></li>
+<li><strong>Health checks</strong>: <em>ELB</em></li>
+</ul></li>
+<li><p>Choose <strong>Next</strong>.</p></li>
+<li>For <strong>Configure group size and scaling policies</strong>, use the=
+se settings:
+<ul>
+<li><strong>Desired capacity</strong>: <code>2</code></li>
+<li><strong>Minimum capacity</strong>: <code>2</code></li>
+<li><strong>Maximum capacity</strong>: <code>4</code></li>
+<li><strong>Scaling policies</strong>: <em>Target tracking scaling policy</=
+em></li>
+<li><strong>Target value</strong>: <code>60</code></li>
+<li><strong>Instances need</strong>: <code>300</code></li>
+</ul></li>
+<li><p>Choose <strong>Next</strong>.</p></li>
+<li>For <strong>Add notifications</strong>, choose <strong>Add notification=
+</strong> and configure these settings:
+<ul>
+<li><strong>SNS Topic</strong>: <em>Create a topic</em></li>
+<li><strong>Send a notification to</strong>: <code>app-sns-topic</code></li=
+>
+<li><strong>With these recipients</strong>: Enter your email address</li>
+</ul></li>
+<li><p>Choose <strong>Next</strong> and then choose <strong>Next</strong> a=
+gain.</p></li>
+<li><p>Choose <strong>Create Auto Scaling group</strong>.</p>
+<p>You should receive an <strong>AWS Notification - Subscription Confirmati=
+on</strong> email.</p></li>
+<li><p>Open this email message and choose <strong>Confirm subscription</str=
+ong>.</p></li>
+</ol>
+<p>A web browser window should open with a <em>Subscription confirmed!</em>=
+ message.</p>
+<h2 id=3D"task-5-testing-the-application">Task 5: Testing the application</=
+h2>
+<p>In this task, you will stress-test the application and confirm that it s=
+cales.</p>
+<ol type=3D"1">
+<li><p>Return to the Amazon EC2 console.</p></li>
+<li><p>In the navigation pane, under <strong>Load Balancing</strong>, choos=
+e <strong>Target Groups</strong>.</p></li>
+<li><p>Make sure that <strong>app-target-group</strong> is selected and cho=
+ose the <strong>Targets</strong> tab.</p>
+<p>You should see two additional instances launching.</p></li>
+<li><p>Wait until the <strong>Status</strong> for both instances is <em>hea=
+lthy</em>.</p></li>
+<li><p>In the navigation pane, choose <strong>Load Balancers</strong> and m=
+ake sure that <strong>app-alb</strong> is selected.</p></li>
+<li><p>Again, copy the <strong>DNS name</strong> and paste it into a text e=
+ditor of your choice.</p></li>
+<li><p>In the text editor, at the beginning of the URL, add <code>http://</=
+code> and copy the modified URL.</p>
+<p>Example:</p>
+<pre><code>http://app-elb-123456789012.us-west-2.elb.amazonaws.com</code></=
+pre></li>
+<li><p>In a new browser window, paste the URL.</p></li>
+<li><p>At the end of the URL, append <code>/info</code>.</p>
+<p>Example:</p>
+<pre><code>http://app-alb-123456789012.us-west-2.elb.amazonaws.com/info</co=
+de></pre>
+<p>You should see an <strong>Instance Info</strong> page, which shows which=
+ <strong>instance_id</strong> and <strong>availability_zone</strong> you ar=
+e being routed to.</p></li>
+<li><p>Refresh the page a few times. Each time, note that the values for <s=
+trong>instance_id</strong> or <strong>availability_zone</strong> can be dif=
+ferent from the previous ones.</p>
+<p>Now, you need to test auto scaling by stressing the CPU of the instance.=
+</p></li>
+<li><p>For <strong>Stress cpu</strong>, choose <strong>10 min</strong>.</p>
+<p>The top of the browser window should show a message that says <em>Stress=
+ing CPU</em>.</p></li>
+<li><p>Wait for 10 minutes and after the 10 minutes are over, return to the=
+ Amazon EC2 console window.</p></li>
+<li><p>In the navigation pane, under <strong>Load Balancing</strong>, choos=
+e <strong>Target Groups</strong>.</p></li>
+<li><p>Select <strong>app-target-group</strong> and choose the <strong>Targ=
+ets</strong> tab.</p></li>
+</ol>
+<p>You should see additional instances were launched because of the stress =
+test. You should also see a notification email.</p>
+<h2 id=3D"task-6-deleting-the-course-resources">Task 6: Deleting the course=
+ resources</h2>
+<p>In this task, you will delete all the resources that you created in your=
+ AWS account so that you don=E2=80=99t incur additional costs.</p>
+<ol type=3D"1">
+<li>Delete the Auto Scaling group.
+<ul>
+<li>In the Amazon EC2 navigation pane, choose <strong>Auto Scaling groups</=
+strong>.</li>
+<li>Select <strong>app-asg</strong> and choose <strong>Delete</strong>.</li=
+>
+<li>In the box, enter <code>delete</code> and choose <strong>Delete</strong=
+>.</li>
+</ul></li>
+<li>Delete the Application Load Balancer.
+<ul>
+<li>In the Amazon EC2 navigation pane, choose <strong>Load Balancers</stron=
+g>.</li>
+<li>Select <strong>app-elb</strong>, choose <strong>Actions</strong>, and t=
+hen choose<strong>Delete</strong>.</li>
+<li>Confirm the deletion by choosing <strong>Yes, Delete</strong>.</li>
+</ul></li>
+<li>Delete the target group.
+<ul>
+<li>In the Amazon EC2 navigation pane, choose <strong>Target Groups</strong=
+>.</li>
+<li>Select <strong>app-target-group</strong>, choose <strong>Actions</stron=
+g> and then choose <strong>Delete</strong>.</li>
+<li>Confirm the deletion by choosing <strong>Yes, delete</strong>.</li>
+</ul></li>
+<li>Terminate all the EC2 instances that you created during this course.
+<ul>
+<li>In the Amazon EC2 navigation pane, choose <strong>Instances</strong>.</=
+li>
+<li>Select all the EC2 instances that you created for this course (all inst=
+ances that start with <em>employee-directory-app</em>)</li>
+<li>Choose <strong>Instance State</strong> and then choose <strong>Terminat=
+e instance</strong>.</li>
+<li>Confirm the deletion by choosing <strong>Terminate</strong>.</li>
+</ul></li>
+<li>Delete the DynamoDB table.
+<ul>
+<li>Return to the DynamoDB console.</li>
+<li>In the navigation pane, choose <strong>Tables</strong>.</li>
+<li>Select the <strong>Employees</strong> table.</li>
+<li>Choose <strong>Delete</strong>.</li>
+<li>Confirm the deletion by entering <code>delete</code> and choosing <stro=
+ng>Delete table</strong>.</li>
+</ul></li>
+<li>Delete the S3 bucket.
+<ul>
+<li>Return to the Amazon S3 console.</li>
+<li>Choose the radio button for <strong>employee-photo-bucket-</strong>.</l=
+i>
+<li>Choose <strong>Empty</strong>.</li>
+<li>In the box, enter <code>permanently delete</code> and choose <strong>Em=
+pty</strong>.</li>
+<li>In the message at the top of the window, choose <strong>delete bucket c=
+onfiguration</strong>.</li>
+<li>In the box, paste the bucket name and choose <strong>Delete bucket</str=
+ong>.</li>
+</ul></li>
+<li>Delete the route tables.
+<ul>
+<li>In the console, return to the VPC dashboard.</li>
+<li>In the navigation pane, choose <strong>Route Tables</strong>.</li>
+<li>Select <strong>app-routetable-public</strong> and choose the <strong>Su=
+bnet Associations</strong> tab.</li>
+<li>Choose <strong>Edit subnet associations</strong>.</li>
+<li>Clear the following check boxes:
+<ul>
+<li><strong>Public Subnet 1</strong></li>
+<li><strong>Public Subnet 2</strong></li>
+</ul></li>
+<li>Choose <strong>Save associations</strong>.</li>
+<li>Select <strong>app-routetable-public</strong> again, choose <strong>Act=
+ions</strong>, and choose <strong>Delete route table</strong>.</li>
+<li>Confirm the deletion by entering <code>delete</code>, and then choose <=
+strong>Delete</strong>.</li>
+<li>Repeat the previous steps to delete <strong>app-routetable-private</str=
+ong>.</li>
+</ul></li>
+<li>Delete the internet gateway.
+<ul>
+<li>In the VPC dashboard navigation pane, choose <strong>Internet Gateways<=
+/strong>.</li>
+<li>Select <strong>app-igw</strong>, choose <strong>Action</strong>, and ch=
+oose <strong>Detach from VPC</strong>.</li>
+<li>In the dialog box, choose <strong>Detach internet gateway</strong>.</li=
+>
+<li>Select <strong>app-igw</strong> again, choose <strong>Actions</strong>,=
+ and choose <strong>Delete internet gateway</strong>.</li>
+<li>Confirm the deletion by entering <code>delete</code>, and choose <stron=
+g>Delete internet gateway</strong>.</li>
+</ul></li>
+<li>Delete the subnets.
+<ul>
+<li>In the VPC dashboard navigation pane, choose <strong>Subnets</strong>.<=
+/li>
+<li>Select the following subnets:
+<ul>
+<li><strong>Public Subnet 1</strong></li>
+<li><strong>Public Subnet 2</strong></li>
+<li><strong>Private Subnet 1</strong></li>
+<li><strong>Private Subnet 2</strong></li>
+</ul></li>
+<li>Choose <strong>Actions</strong> and then choose <strong>Delete subnet</=
+strong>.</li>
+<li>Confirm the deletion by entering <code>delete</code>, and choose <stron=
+g>Delete</strong>.</li>
+</ul></li>
+<li>Delete the VPC.
+<ul>
+<li>In the VPC dashboard navigation pane, choose <strong>Your VPCs</strong>=
+.</li>
+<li>Select the <strong>app-vpc</strong>, choose <strong>Actions</strong>, a=
+nd choose <strong>Delete VPC</strong>.</li>
+<li>Confirm the deletion by entering <code>delete</code>, and then choose <=
+strong>Delete</strong>.</li>
+</ul></li>
+<li>If needed, delete the security groups.
+<ul>
+<li>Return to the Amazon EC2 console.</li>
+<li>In the navigation pane, choose <strong>Security Groups</strong>.</li>
+<li>Select the following security groups:
+<ul>
+<li><strong>app-sg</strong></li>
+<li><strong>load-balancer-sg</strong></li>
+</ul></li>
+<li>Choose <strong>Actions</strong> and then choose <strong>Delete security=
+ groups</strong>.</li>
+<li>Confirm the deletion by choosing <strong>Delete</strong>.</li>
+</ul></li>
+<li>Delete the IAM role that you created.
+<ul>
+<li>Return to the IAM console.</li>
+<li>In the navigation pane, choose <strong>Roles</strong> and search for <c=
+ode>S3DynamoDB</code>.</li>
+<li>Select <strong>S3DynamoDBFullAccessRole</strong> and choose <strong>Del=
+ete</strong>.</li>
+<li>In the <strong>To confirm deletion</strong> box, paste <code>S3DynamoDB=
+FullAccessRole</code>, and then choose <strong>Delete</strong>.</li>
+<li>You can also delete the IAM Admin user that you set up.</li>
+</ul></li>
+<li>Delete the SNS topic.
+<ul>
+<li>Open the Amazon SNS console.</li>
+<li>In the navigation pane, choose <strong>Topics</strong>.</li>
+<li>Choose the radio button for <strong>app-sns-topic</strong> and choose <=
+strong>Delete</strong>.</li>
+<li>Confirm the deletion by entering <code>delete me</code>, and then choos=
+e <strong>Delete</strong>.</li>
+</ul></li>
+</ol>
+
+
+<footer>
+    <p>=C2=A9 2022 Amazon Web Services, Inc. or its affiliates. All rights =
+reserved. This work may not be reproduced or redistributed, in whole or in =
+part, without prior written permission from Amazon Web Services, Inc. Comme=
+rcial copying, lending, or selling is prohibited. Corrections, feedback, or=
+ other questions? Contact us at <a href=3D"https://support.aws.amazon.com/#=
+/contacts/aws-training" target=3D"_blank">https://support.aws.amazon.com/#/=
+contacts/aws-training</a>. All trademarks are the property of their owners.=
+</p>
+</footer>
+
+</body><grammarly-desktop-integration data-grammarly-shadow-root=3D"true"><=
+template shadowmode=3D"open"><div aria-label=3D"grammarly-integration" role=
+=3D"group" tabindex=3D"-1" class=3D"grammarly-desktop-integration" data-con=
+tent=3D"{&quot;mode&quot;:&quot;full&quot;,&quot;isActive&quot;:true,&quot;=
+isUserDisabled&quot;:false}"></div></template></grammarly-desktop-integrati=
+on></html>
+------MultipartBoundary--nDQa27HjiEyh2Xj0EovE9nUrAfPGgGnKSFBsITYxlX----
+Content-Type: text/css
+Content-Transfer-Encoding: quoted-printable
+Content-Location: cid:css-f2bb614c-b058-460e-bfbc-49414aba8b15@mhtml.blink
+
+@charset "utf-8";
+
+html, body, footer { font-family: "Open Sans", "Helvetica Neue", Helvetica,=
+ Arial, sans-serif; margin: 1em; }
+
+img:not(.clipboard) { max-width: 100%; height: auto; width: auto; }
+
+button.copybtn { transition: opacity 0.3s ease-in-out 0s; opacity: 0; paddi=
+ng: 2px 6px; position: absolute; right: 4px; top: 4px; }
+
+div.sourceCode:hover .copybtn, div.sourceCode .copybtn:focus { opacity: 0.3=
+; }
+
+div.sourceCode .copybtn:hover { opacity: 1; }
+
+div.sourceCode { position: relative; }
+
+.xmodule_display.xmodule_HtmlBlock ol { padding: 0px 0px 0px 2em !important=
+; }
+
+.xmodule_display.xmodule_HtmlBlock ul { padding: 0px 0px 0px 2em !important=
+; }
+
+code { border-radius: 4px; padding: 2px 4px !important; background-color: r=
+gb(238, 238, 238) !important; }
+
+pre code { display: block; overflow-x: auto; margin: 0px 0px 10px; font-siz=
+e: 13px; line-height: 1.42857; word-break: break-all; overflow-wrap: break-=
+word; border: 1px solid rgb(204, 204, 204); border-radius: 4px; white-space=
+: pre; padding: 9.5px !important; background-color: rgb(245, 245, 245) !imp=
+ortant; }
+
+pre code span.al { color: rgb(255, 0, 0); font-weight: bold; }
+
+pre code span.an { color: rgb(96, 160, 176); font-weight: bold; font-style:=
+ italic; }
+
+pre code span.at { color: rgb(125, 144, 41); }
+
+pre code span.bn { color: rgb(64, 160, 112); }
+
+pre code span.bu { color: rgb(6, 40, 126); }
+
+pre code span.cf { color: rgb(0, 112, 32); font-weight: bold; }
+
+pre code span.ch { color: rgb(64, 112, 160); }
+
+pre code span.cn { color: rgb(136, 0, 0); }
+
+pre code span.co { color: rgb(96, 160, 176); font-style: italic; }
+
+pre code span.cv { color: rgb(96, 160, 176); font-weight: bold; font-style:=
+ italic; }
+
+pre code span.do { color: rgb(186, 33, 33); font-style: italic; }
+
+pre code span.dt { color: rgb(144, 32, 0); }
+
+pre code span.dv { color: rgb(64, 160, 112); }
+
+pre code span.er { color: rgb(255, 0, 0); font-weight: bold; }
+
+pre code span.ex { color: rgb(6, 40, 126); }
+
+pre code span.fl { color: rgb(64, 160, 112); }
+
+pre code span.fu { color: rgb(6, 40, 126); }
+
+pre code span.im { }
+
+pre code span.in { color: rgb(96, 160, 176); font-weight: bold; font-style:=
+ italic; }
+
+pre code span.kw { color: rgb(0, 112, 32); font-weight: bold; }
+
+pre code span.op { color: rgb(102, 102, 102); }
+
+pre code span.ot { color: rgb(0, 112, 32); }
+
+pre code span.pp { color: rgb(188, 122, 0); }
+
+pre code span.sc { color: rgb(64, 112, 160); }
+
+pre code span.ss { color: rgb(187, 102, 136); }
+
+pre code span.st { color: rgb(64, 112, 160); }
+
+pre code span.va { color: rgb(25, 23, 124); }
+
+pre code span.vs { color: rgb(64, 112, 160); }
+
+pre code span.wa { color: rgb(96, 160, 176); font-weight: bold; font-style:=
+ italic; }
+
+footer { padding-top: 3em; font-style: italic; font-size: 0.9em; }
+------MultipartBoundary--nDQa27HjiEyh2Xj0EovE9nUrAfPGgGnKSFBsITYxlX----
+Content-Type: image/svg+xml
+Content-Transfer-Encoding: quoted-printable
+Content-Location: https://aws-tc-largeobjects.s3.us-west-2.amazonaws.com/DEV-AWS-MO-GCNv2/images/clipboard.svg
+
+<svg height=3D"1024" width=3D"896" xmlns=3D"http://www.w3.org/2000/svg">
+  <path d=3D"M128 768h256v64H128v-64z m320-384H128v64h320v-64z m128 192V448=
+L384 640l192 192V704h320V576H576z m-288-64H128v64h160v-64zM128 704h160v-64H=
+128v64z m576 64h64v128c-1 18-7 33-19 45s-27 18-45 19H64c-35 0-64-29-64-64V1=
+92c0-35 29-64 64-64h192C256 57 313 0 384 0s128 57 128 128h192c35 0 64 29 64=
+ 64v320h-64V320H64v576h640V768zM128 256h512c0-35-29-64-64-64h-64c-35 0-64-2=
+9-64-64s-29-64-64-64-64 29-64 64-29 64-64 64h-64c-35 0-64 29-64 64z" />
+</svg>=0A
+------MultipartBoundary--nDQa27HjiEyh2Xj0EovE9nUrAfPGgGnKSFBsITYxlX------

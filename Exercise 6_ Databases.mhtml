@@ -1,0 +1,316 @@
+From: <Saved by Blink>
+Snapshot-Content-Location: https://aws-tc-largeobjects.s3-us-west-2.amazonaws.com/DEV-AWS-MO-GCNv2/exercise-6-databases.html
+Subject: Exercise 6: Databases
+Date: Wed, 22 Feb 2023 10:53:08 -0000
+MIME-Version: 1.0
+Content-Type: multipart/related;
+	type="text/html";
+	boundary="----MultipartBoundary--ISEIwnPJ7rxKCCbEtyncCYm7DoP6ponYYNz234AcUh----"
+
+
+------MultipartBoundary--ISEIwnPJ7rxKCCbEtyncCYm7DoP6ponYYNz234AcUh----
+Content-Type: text/html
+Content-ID: <frame-1AC81726EA76C5FC85A2A0D3AD183576@mhtml.blink>
+Content-Transfer-Encoding: quoted-printable
+Content-Location: https://aws-tc-largeobjects.s3-us-west-2.amazonaws.com/DEV-AWS-MO-GCNv2/exercise-6-databases.html
+
+<!DOCTYPE html><html xmlns=3D"http://www.w3.org/1999/xhtml" lang=3D"" xml:l=
+ang=3D""><head><meta http-equiv=3D"Content-Type" content=3D"text/html; char=
+set=3DUTF-8"><link rel=3D"stylesheet" type=3D"text/css" href=3D"cid:css-dbf=
+b88ba-6980-494e-b3da-f1a8001bf874@mhtml.blink" />
+ =20
+  <meta name=3D"generator" content=3D"pandoc">
+  <meta name=3D"viewport" content=3D"width=3Ddevice-width, initial-scale=3D=
+1.0, user-scalable=3Dyes">
+  <title>Exercise 6: Databases</title>
+ =20
+ =20
+
+
+</head><body data-new-gr-c-s-check-loaded=3D"14.1097.0" data-gr-ext-install=
+ed=3D"">
+<p><em>[version_1.1]</em></p>
+<div style=3D"background-color: #FFD2D2; padding: 15px; margin-bottom: 25px=
+">
+<h3>
+<span class=3D"fa fa-info-circle"></span> Note
+</h3>
+<p>The exercises in this course will have an associated charge in your AWS =
+account. In this exercise, you create or use the following resources:</p>
+<ul>
+<li>AWS Identity and Access Management (IAM) policy and user (policies and =
+users are AWS account features, offered at no additional charge)</li>
+<li>Amazon Elastic Compute Cloud (Amazon EC2) instance</li>
+<li>Amazon DynamoDB table</li>
+</ul>
+<p>Familiarize yourself with <strong><a href=3D"https://aws.amazon.com/ec2/=
+pricing/" target=3D"_blank">Amazon EC2 pricing</a></strong>, <strong><a hre=
+f=3D"https://aws.amazon.com/dynamodb/pricing/" target=3D"_blank">Amazon Dyn=
+amoDB pricing</a></strong>, and the <strong><a href=3D"https://aws.amazon.c=
+om/free/" target=3D"_blank">AWS Free Tier</a></strong>.</p>
+</div>
+<h1 id=3D"exercise-6-setting-up-the-database">Exercise 6: Setting up the Da=
+tabase</h1>
+<p>In this scenario, part of your responsibility is to keep the employee da=
+tabase up to date.</p>
+<p>In this exercise, you first launch another EC2 instance. Then, you creat=
+e the DynamoDB table for the employee directory application.</p>
+<h2 id=3D"task-1-launching-an-ec2-instance">Task 1: Launching an EC2 instan=
+ce</h2>
+<p>In this task, you will launch another EC2 instance.</p>
+<ol type=3D"1">
+<li><p>If needed, log in to the AWS Management Console as your <em>Admin</e=
+m> user.</p></li>
+<li><p>Open the Amazon EC2 console by searching for and choosing <strong>EC=
+2</strong>.</p></li>
+<li><p>In the navigation pane, choose <strong>Instances</strong>.</p></li>
+<li><p>If needed, select the check box for the <strong>employee-directory-a=
+pp-s3</strong> instance, which should be in the <em>Stopped</em> state.</p>=
+</li>
+<li><p>Choose <strong>Actions</strong> and then choose <strong>Image and te=
+mplates</strong>, <strong>Launch more like this</strong>.</p></li>
+<li><p>For <strong>Name</strong> and at the end of the <strong>Value</stron=
+g>, append <code>-exercise6</code>.</p>
+<p>Example:</p>
+<div class=3D"sourceCode" id=3D"cb1"><pre class=3D"sourceCode bash" id=3D"c=
+odeblock0"><code class=3D"sourceCode bash"><a class=3D"sourceLine" id=3D"cb=
+1-1" title=3D"1">   <span class=3D"ex">employee-directory-app-exercise6</sp=
+an></a></code></pre><button class=3D"btn copybtn" data-clipboard-target=3D"=
+#codeblock0"><img class=3D"clipboard" src=3D"https://aws-tc-largeobjects.s3=
+-us-west-2.amazonaws.com/DEV-AWS-MO-GCNv2/images/clipboard.svg" width=3D"13=
+" alt=3D"Copy to clipboard"></button></div></li>
+<li><p>For <strong>Key pair name</strong>, select <strong>app-key-pair</str=
+ong>.</p></li>
+<li><p>Under <strong>Network settings</strong> and <strong>Auto-assign Publ=
+ic IP</strong>, choose <strong>Enable</strong>.</p></li>
+<li><p>Choose <strong>Launch instance</strong>.</p></li>
+<li><p>Choose <strong>View all instances</strong>.</p>
+<p>The instance should now be in the <strong>Instances</strong> list.</p></=
+li>
+<li><p>Wait for the <strong>Instance state</strong> to change to <em>Runnin=
+g</em> and the <strong>Status check</strong> to change to <em>2/2 checks pa=
+ssed</em>.</p></li>
+<li><p>If needed, clear the check box for the <strong>employee-directory-ap=
+p-s3</strong> instance.</p></li>
+<li><p>Select the check box for <strong>employee-directory-app-exercise6</s=
+trong>.</p></li>
+<li><p>Copy the <strong>Public IPv4 address</strong>.</p>
+<p><strong>Note</strong>: Make sure that you only copy the address instead =
+of choosing the <strong>open address</strong> link.</p></li>
+<li><p>In a new browser window, paste the IP address that you copied. <em>M=
+ake sure to remove the =E2=80=98S=E2=80=99 after HTTP so you are using only=
+ HTTP instead</em>.</p></li>
+</ol>
+<p>You should see an <strong>Employee Directory</strong> placeholder. You w=
+on=E2=80=99t be able to interact with the application yet because it=E2=80=
+=99s not connected to a database.</p>
+<ol type=3D"1">
+<li>Close the application browser window.</li>
+</ol>
+<h2 id=3D"task-2-creating-the-dynamodb-table">Task 2: Creating the DynamoDB=
+ table</h2>
+<p>To connect the application to a database, you first need to create one! =
+In this task, you will create a database by using DynamoDB.</p>
+<ol type=3D"1">
+<li><p>Return to the console, and search for and open <strong>DynamoDB</str=
+ong>.</p></li>
+<li><p>In the navigation pane, choose <strong>Tables</strong>.</p></li>
+<li>Choose <strong>Create table</strong> and configure the following settin=
+gs.
+<ul>
+<li><strong>Table name</strong>: <code>Employees</code></li>
+<li><strong>Partition key</strong>: <code>id</code></li>
+</ul></li>
+<li><p>Choose <strong>Create table</strong>.</p></li>
+</ol>
+<h2 id=3D"task-3-testing-the-application">Task 3: Testing the application</=
+h2>
+<p>In this task, you will test whether the application works by using it to=
+ create an employee entry and upload a photo.</p>
+<ol type=3D"1">
+<li><p>Return to the Amazon EC2 console by searching for and opening <stron=
+g>EC2</strong>.</p></li>
+<li><p>In the instance list, select the check box for the <strong>employee-=
+directory-app-exercise6</strong> instance.</p></li>
+<li><p>On the <strong>Details</strong> tab, copy the <strong>Public IPv4 ad=
+dress</strong> and in a new browser window, paste the IP address.</p></li>
+<li><p>In the application interface, choose <strong>Add</strong>.</p></li>
+<li><p>Create a new employee entry by entering a name, location, and job ti=
+tle, and by selecting some attributes.</p></li>
+<li><p>Upload a picture by choosing <strong>Browse</strong> and uploading a=
+ picture of your choice.</p></li>
+<li><p>Choose <strong>Save</strong>.</p></li>
+<li><p>Create and save a few employee entries.</p></li>
+</ol>
+<p><strong>Note:</strong> You can also edit and delete entries.</p>
+<p>In the employee directory application, you should now see the list of em=
+ployees (and their photos) that you added.</p>
+<h2 id=3D"task-4-viewing-the-item-in-the-database">Task 4: Viewing the item=
+ in the database</h2>
+<p>In this task, you will see how the employee entries are stored in Dynamo=
+DB.</p>
+<ol type=3D"1">
+<li><p>Return to the console, and search for and open <strong>DynamoDB</str=
+ong>.</p></li>
+<li><p>In the navigation pane, choose <strong>Tables</strong>.</p></li>
+<li><p>Open the table details by choosing the <strong>Employees</strong> li=
+nk.</p></li>
+<li><p>Choose <strong>Explore table items</strong>.</p></li>
+</ol>
+<p>In the <strong>Items returned</strong> list, you should now see the entr=
+ies in the database that you made by using the application on the EC2 insta=
+nce.</p>
+<p>Congratulations! You launched an EC2 instance that uses the S3 bucket, a=
+nd is connected to the DynamoDB table.</p>
+<h2 id=3D"task-5-stopping-your-ec2-instance">Task 5: Stopping your EC2 inst=
+ance</h2>
+<p>In this task, you will now stop the instance to prevent future costs fro=
+m incurring.</p>
+<p><strong>Note:</strong> Do not terminate the instance because you will us=
+e it in the next exercise.</p>
+<ol type=3D"1">
+<li><p>Return to the Amazon EC2 console by searching for and opening <stron=
+g>EC2</strong>.</p></li>
+<li><p>If needed, in the navigation pane, choose <strong>Instances</strong>=
+.</p></li>
+<li><p>Select the check box for <strong>employee-directory-app-exercise6</s=
+trong>.</p></li>
+<li><p>Choose <strong>Instance state</strong> and then choose <strong>Stop =
+instance</strong>.</p></li>
+<li><p>In the dialog box, choose <strong>Stop</strong>.</p></li>
+</ol>
+<p>The <strong>Instance state</strong> will eventually go into the <em>Stop=
+ped</em> state.</p>
+
+
+<footer>
+    <p>=C2=A9 2022 Amazon Web Services, Inc. or its affiliates. All rights =
+reserved. This work may not be reproduced or redistributed, in whole or in =
+part, without prior written permission from Amazon Web Services, Inc. Comme=
+rcial copying, lending, or selling is prohibited. Corrections, feedback, or=
+ other questions? Contact us at <a href=3D"https://support.aws.amazon.com/#=
+/contacts/aws-training" target=3D"_blank">https://support.aws.amazon.com/#/=
+contacts/aws-training</a>. All trademarks are the property of their owners.=
+</p>
+</footer>
+
+</body><grammarly-desktop-integration data-grammarly-shadow-root=3D"true"><=
+template shadowmode=3D"open"><div aria-label=3D"grammarly-integration" role=
+=3D"group" tabindex=3D"-1" class=3D"grammarly-desktop-integration" data-con=
+tent=3D"{&quot;mode&quot;:&quot;full&quot;,&quot;isActive&quot;:true,&quot;=
+isUserDisabled&quot;:false}"></div></template></grammarly-desktop-integrati=
+on></html>
+------MultipartBoundary--ISEIwnPJ7rxKCCbEtyncCYm7DoP6ponYYNz234AcUh----
+Content-Type: text/css
+Content-Transfer-Encoding: quoted-printable
+Content-Location: cid:css-dbfb88ba-6980-494e-b3da-f1a8001bf874@mhtml.blink
+
+@charset "utf-8";
+
+html, body, footer { font-family: "Open Sans", "Helvetica Neue", Helvetica,=
+ Arial, sans-serif; margin: 1em; }
+
+img:not(.clipboard) { max-width: 100%; height: auto; width: auto; }
+
+button.copybtn { transition: opacity 0.3s ease-in-out 0s; opacity: 0; paddi=
+ng: 2px 6px; position: absolute; right: 4px; top: 4px; }
+
+div.sourceCode:hover .copybtn, div.sourceCode .copybtn:focus { opacity: 0.3=
+; }
+
+div.sourceCode .copybtn:hover { opacity: 1; }
+
+div.sourceCode { position: relative; }
+
+.xmodule_display.xmodule_HtmlBlock ol { padding: 0px 0px 0px 2em !important=
+; }
+
+.xmodule_display.xmodule_HtmlBlock ul { padding: 0px 0px 0px 2em !important=
+; }
+
+code { border-radius: 4px; padding: 2px 4px !important; background-color: r=
+gb(238, 238, 238) !important; }
+
+pre code { display: block; overflow-x: auto; margin: 0px 0px 10px; font-siz=
+e: 13px; line-height: 1.42857; word-break: break-all; overflow-wrap: break-=
+word; border: 1px solid rgb(204, 204, 204); border-radius: 4px; white-space=
+: pre; padding: 9.5px !important; background-color: rgb(245, 245, 245) !imp=
+ortant; }
+
+pre code span.al { color: rgb(255, 0, 0); font-weight: bold; }
+
+pre code span.an { color: rgb(96, 160, 176); font-weight: bold; font-style:=
+ italic; }
+
+pre code span.at { color: rgb(125, 144, 41); }
+
+pre code span.bn { color: rgb(64, 160, 112); }
+
+pre code span.bu { color: rgb(6, 40, 126); }
+
+pre code span.cf { color: rgb(0, 112, 32); font-weight: bold; }
+
+pre code span.ch { color: rgb(64, 112, 160); }
+
+pre code span.cn { color: rgb(136, 0, 0); }
+
+pre code span.co { color: rgb(96, 160, 176); font-style: italic; }
+
+pre code span.cv { color: rgb(96, 160, 176); font-weight: bold; font-style:=
+ italic; }
+
+pre code span.do { color: rgb(186, 33, 33); font-style: italic; }
+
+pre code span.dt { color: rgb(144, 32, 0); }
+
+pre code span.dv { color: rgb(64, 160, 112); }
+
+pre code span.er { color: rgb(255, 0, 0); font-weight: bold; }
+
+pre code span.ex { color: rgb(6, 40, 126); }
+
+pre code span.fl { color: rgb(64, 160, 112); }
+
+pre code span.fu { color: rgb(6, 40, 126); }
+
+pre code span.im { }
+
+pre code span.in { color: rgb(96, 160, 176); font-weight: bold; font-style:=
+ italic; }
+
+pre code span.kw { color: rgb(0, 112, 32); font-weight: bold; }
+
+pre code span.op { color: rgb(102, 102, 102); }
+
+pre code span.ot { color: rgb(0, 112, 32); }
+
+pre code span.pp { color: rgb(188, 122, 0); }
+
+pre code span.sc { color: rgb(64, 112, 160); }
+
+pre code span.ss { color: rgb(187, 102, 136); }
+
+pre code span.st { color: rgb(64, 112, 160); }
+
+pre code span.va { color: rgb(25, 23, 124); }
+
+pre code span.vs { color: rgb(64, 112, 160); }
+
+pre code span.wa { color: rgb(96, 160, 176); font-weight: bold; font-style:=
+ italic; }
+
+footer { padding-top: 3em; font-style: italic; font-size: 0.9em; }
+------MultipartBoundary--ISEIwnPJ7rxKCCbEtyncCYm7DoP6ponYYNz234AcUh----
+Content-Type: image/svg+xml
+Content-Transfer-Encoding: quoted-printable
+Content-Location: https://aws-tc-largeobjects.s3-us-west-2.amazonaws.com/DEV-AWS-MO-GCNv2/images/clipboard.svg
+
+<svg height=3D"1024" width=3D"896" xmlns=3D"http://www.w3.org/2000/svg">
+  <path d=3D"M128 768h256v64H128v-64z m320-384H128v64h320v-64z m128 192V448=
+L384 640l192 192V704h320V576H576z m-288-64H128v64h160v-64zM128 704h160v-64H=
+128v64z m576 64h64v128c-1 18-7 33-19 45s-27 18-45 19H64c-35 0-64-29-64-64V1=
+92c0-35 29-64 64-64h192C256 57 313 0 384 0s128 57 128 128h192c35 0 64 29 64=
+ 64v320h-64V320H64v576h640V768zM128 256h512c0-35-29-64-64-64h-64c-35 0-64-2=
+9-64-64s-29-64-64-64-64 29-64 64-29 64-64 64h-64c-35 0-64 29-64 64z" />
+</svg>=0A
+------MultipartBoundary--ISEIwnPJ7rxKCCbEtyncCYm7DoP6ponYYNz234AcUh------
